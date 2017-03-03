@@ -27,7 +27,7 @@ When the REQUEST_DNS_REGISTER is defined in a container, it will be registered o
 Example run
 ===========
 ```
-docker run --rm --name route53 -v /var/run/docker.sock:/tmp/docker.sock -v /root/.aws:/root/.aws -e RECORD_IP=$(hostname -i) -e ZONE=staging.aws -t route53-registrar
+docker run --rm -ti --name route53 -v /var/run/docker.sock:/var/run/docker.sock -e ZONE=staging.aws route53-registrar
 ```
 
 Minimum IAM policy:

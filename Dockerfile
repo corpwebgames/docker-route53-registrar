@@ -14,11 +14,12 @@ RUN pip install cli53
 RUN mkdir /app
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y wget --no-install-recommends && rm -rf /var/lib/apt/lists/* && \
-	wget https://github.com/jwilder/docker-gen/releases/download/0.4.0/docker-gen-linux-amd64-0.4.0.tar.gz && \
-	tar xvzf docker-gen-linux-amd64-0.4.0.tar.gz -C /usr/local/bin && \
-	rm docker-gen-linux-amd64-0.4.0.tar.gz
+RUN apt-get update && apt-get install -y wget curl --no-install-recommends && rm -rf /var/lib/apt/lists/* && \
+	wget https://github.com/jwilder/docker-gen/releases/download/0.7.3/docker-gen-linux-amd64-0.7.3.tar.gz && \
+	tar xvzf docker-gen-linux-amd64-0.7.3.tar.gz -C /usr/local/bin && \
+	rm docker-gen-linux-amd64-0.7.3.tar.gz
 
 ADD cli53routes.tmpl /app/cli53routes.tmpl
+RUN chmod +x /app/cli53routes.tmpl
 
-CMD /usr/local/bin/docker-gen -watch -notify "/bin/sh /tmp/cli53routes" /app/cli53routes.tmpl /tmp/cli53routes
+CMD /usr/local/bin/docker-gen -watch -notify "chmod +x /tmp/cli53routes && /bin/sh /tmp/cli53routes" /app/cli53routes.tmpl /tmp/cli53routes
