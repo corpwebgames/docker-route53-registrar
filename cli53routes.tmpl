@@ -4,7 +4,7 @@
 
 {{ range $REQUESTED, $CONTAINERS := groupByMulti $ "Env.REQUEST_DNS_REGISTER" "," }}
 {{ range $CONTAINER := $CONTAINERS }}
-CMD="cli53 rrcreate $ZONE {{ $CONTAINER.Name }} A $RECORD_IP --ttl 15 --replace"
+CMD="cli53 rrcreate $ZONE {{ $Env.VIRTUAL_HOST }} A $RECORD_IP --ttl 15 --replace"
 if [ -z "$DRY_RUN" ]; then
   echo "$CMD" >> /var/log/route53-registrar.log
   $CMD >> /var/log/route53-registrar.log 2>&1

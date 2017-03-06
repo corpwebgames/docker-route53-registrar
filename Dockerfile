@@ -22,4 +22,4 @@ RUN apt-get update && apt-get install -y wget curl --no-install-recommends && rm
 ADD cli53routes.tmpl /app/cli53routes.tmpl
 RUN chmod +x /app/cli53routes.tmpl
 
-CMD /usr/local/bin/docker-gen -watch -notify "chmod +x /tmp/cli53routes && /bin/sh /tmp/cli53routes" /app/cli53routes.tmpl /tmp/cli53routes
+CMD /usr/local/bin/docker-gen -watch -notify "/bin/sh /tmp/cli53routes" -notify-output /app/cli53routes.tmpl /tmp/cli53routes
