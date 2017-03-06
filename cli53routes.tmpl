@@ -2,14 +2,17 @@
 [ -z "$RECORD_IP" ] && RECORD_IP=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4`
 [ -z "$RECORD_IP" -o "not found" = "$RECORD_IP" ] && RECORD_IP=`curl -s icanhazip.com`
 
-{{ range $REQUESTED, $CONTAINERS := groupByMulti $ "Env.REQUEST_DNS_REGISTER" "," }}
+echo "Got IP: $RECORD_IP"
+{{ range $REQUESTED, $CONTAINERS := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
 {{ range $CONTAINER := $CONTAINERS }}
-CMD="cli53 rrcreate $ZONE {{ $Env.VIRTUAL_HOST }} A $RECORD_IP --ttl 15 --replace"
+CMD="cli53 rrcreate $ZONE {{ $CONTAINER.Env.VIRTUAL_HOST }} A $RECORD_IP --replace"
 if [ -z "$DRY_RUN" ]; then
-  echo "$CMD" >> /var/log/route53-registrar.log
-  $CMD >> /var/log/route53-registrar.log 2>&1
+  echo "$CMD"
+  $CMD 2>&1
+  sleep .2
 else
   echo "DRYRUN: $CMD"
 fi
 {{ end }}
 {{ end }}
+echo ""
