@@ -6,7 +6,8 @@ echo "Got IP: $RECORD_IP"
 
 {{ range $REQUESTED, $CONTAINERS := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
 {{ range $CONTAINER := $CONTAINERS }}
-CMD="cli53 rrcreate $ZONE {{ $CONTAINER.Env.VIRTUAL_HOST }} A $RECORD_IP --replace"
+RECORD=`echo "{{ $CONTAINER.Env.VIRTUAL_HOST }}" | cut -d"." -f1`
+CMD="cli53 rrcreate --replace $ZONE '$RECORD 50 A $RECORD_IP'"
 if [ -z "$DRY_RUN" ]; then
   echo "$CMD"
   $CMD 2>&1
@@ -16,4 +17,4 @@ else
 fi
 {{ end }}
 {{ end }}
-echo ""
+echo " "
