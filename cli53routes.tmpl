@@ -3,6 +3,7 @@
 [ -z "$RECORD_IP" -o "not found" = "$RECORD_IP" ] && RECORD_IP=`curl -s icanhazip.com`
 
 echo "Got IP: $RECORD_IP"
+
 {{ range $REQUESTED, $CONTAINERS := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
 {{ range $CONTAINER := $CONTAINERS }}
 CMD="cli53 rrcreate $ZONE {{ $CONTAINER.Env.VIRTUAL_HOST }} A $RECORD_IP --replace"

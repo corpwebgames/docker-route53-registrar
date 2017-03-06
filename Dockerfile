@@ -3,7 +3,7 @@ FROM debian:jessie
 RUN mkdir /app
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y wget curl --no-install-recommends && rm -rf /var/lib/apt/lists/* && \
+RUN apt-get update && apt-get install -y ca-certificates wget curl --no-install-recommends && rm -rf /var/lib/apt/lists/* && \
 	wget https://github.com/jwilder/docker-gen/releases/download/0.7.3/docker-gen-linux-amd64-0.7.3.tar.gz && \
 	tar xvzf docker-gen-linux-amd64-0.7.3.tar.gz -C /usr/local/bin && \
 	rm docker-gen-linux-amd64-0.7.3.tar.gz
