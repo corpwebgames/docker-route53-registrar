@@ -10,7 +10,7 @@ RECORD=`echo "{{ $CONTAINER.Env.VIRTUAL_HOST }}" | cut -d"." -f1`
 CMD="cli53 rrcreate --replace $ZONE '$RECORD 50 A $RECORD_IP'"
 if [ -z "$DRY_RUN" ]; then
   echo "$CMD"
-  $CMD 2>&1
+  eval $CMD 2>&1
   sleep .2
 else
   echo "DRYRUN: $CMD"
