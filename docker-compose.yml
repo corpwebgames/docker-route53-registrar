@@ -1,0 +1,36 @@
+version: '2.1'
+
+services:
+  route53-registrar:
+    image: webgames/route53-registrar
+    container_name: route53-registrar
+    restart: always
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+    environment:
+      - ZONE=dmdata.org
+
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    restart: always
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
