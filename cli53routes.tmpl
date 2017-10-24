@@ -2,12 +2,20 @@
 [ -z "$RECORD_IP" ] && RECORD_IP=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4`
 [ -z "$RECORD_IP" -o "not found" = "$RECORD_IP" ] && RECORD_IP=`curl -s icanhazip.com`
 
+[ -z "$RECORD_HOST" ] && RECORD_HOST=`curl -s http://169.254.169.254/latest/meta-data/public-hostname`
+
 echo "Got IP: $RECORD_IP"
+echo "Got HOST: $RECORD_HOST"
 
 {{ range $REQUESTED, $CONTAINERS := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
 {{ range $CONTAINER := $CONTAINERS }}
 RECORD=`echo "{{ $CONTAINER.Env.VIRTUAL_HOST }}" | cut -d"." -f1`
-CMD="cli53 rrcreate --replace $ZONE '$RECORD 50 A $RECORD_IP'"
+
+if [ -z "$USE_A_RECORD" ]; then
+	CMD="cli53 rrcreate --replace $ZONE '$RECORD 50 CNAME $RECORD_HOST'"
+else
+	CMD="cli53 rrcreate --replace $ZONE '$RECORD 50 A $RECORD_IP'"
+
 if [ -z "$DRY_RUN" ]; then
   echo "$CMD"
   eval $CMD 2>&1
