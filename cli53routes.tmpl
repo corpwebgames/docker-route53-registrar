@@ -13,7 +13,7 @@ echo "Got HOST: $RECORD_HOST"
 RECORD=`echo "{{ $CONTAINER.Env.VIRTUAL_HOST }}" | cut -d"." -f1`
 
 if [ -z "$USE_A_RECORD" ]; then
-	CMD="cli53 rrcreate --replace $ZONE '$RECORD 50 CNAME $RECORD_HOST'"
+	CMD="cli53 rrcreate --replace $ZONE '$RECORD 50 CNAME $RECORD_HOST.'"
 else
 	CMD="cli53 rrcreate --replace $ZONE '$RECORD 50 A $RECORD_IP'"
 fi
