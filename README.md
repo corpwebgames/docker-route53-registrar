@@ -16,6 +16,8 @@ Environment variables:
 * `AWS_ACCESS_KEY_ID` Required
 * `AWS_SECRET_ACCESS_KEY` Required
 * `RECORD_IP` The IP of the generated records. If not defined will use public IP.
+* `RECORD_HOST`
+* `USE_A_RECORD`
 * `ZONE` Route53 zone name.
 * `DRY_RUN` when defined, just echo the commands that we would run.
 
@@ -27,7 +29,7 @@ When the REQUEST_DNS_REGISTER is defined in a container, it will be registered o
 Example run
 ===========
 ```
-docker run --rm -ti --name route53 -v /var/run/docker.sock:/var/run/docker.sock -e ZONE=staging.aws route53-registrar
+docker run --rm -ti --name route53 -v /var/run/docker.sock:/tmp/docker.sock:ro -e ZONE=staging.aws route53-registrar
 ```
 
 Minimum IAM policy:

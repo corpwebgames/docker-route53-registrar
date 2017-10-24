@@ -1,4 +1,5 @@
 #!/bin/sh
+
 [ -z "$RECORD_IP" ] && RECORD_IP=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4`
 [ -z "$RECORD_IP" -o "not found" = "$RECORD_IP" ] && RECORD_IP=`curl -s icanhazip.com`
 
@@ -15,6 +16,7 @@ if [ -z "$USE_A_RECORD" ]; then
 	CMD="cli53 rrcreate --replace $ZONE '$RECORD 50 CNAME $RECORD_HOST'"
 else
 	CMD="cli53 rrcreate --replace $ZONE '$RECORD 50 A $RECORD_IP'"
+fi
 
 if [ -z "$DRY_RUN" ]; then
   echo "$CMD"
